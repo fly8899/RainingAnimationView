@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="AnimationView">
+        <attr name="duration" format="integer" />
+        <attr name="spawnDelay" format="integer" />
+        <attr name="simulate3D" format="boolean" />
+        <attr name="simulateWiggle" format="boolean" />
+        <attr name="simulateWind" format="boolean" />
+        <attr name="direction" format="enum">
+            <enum name="topToBottom" value="0" />
+            <enum name="bottomToTop" value="1" />
+        </attr>
+        <attr name="interpolator" format="enum">
+            <enum name="linear" value="0" />
+            <enum name="fastOutSlowIn" value="1" />
+        </attr>
+
+
+        <attr name="alphaAnimation" format="boolean" />
+        <attr name="alphaFromAnimation" format="float" />
+        <attr name="alphaToAnimation" format="float" />
+        <attr name="alphaDelayAnimation" format="float" />
+        <attr name="alphaDurationAnimation" format="integer" />
+
+
+        <attr name="drawableId" format="reference" />
+        <attr name="drawableWidth" format="integer" />
+        <attr name="drawableHeight" format="integer" />
+    </declare-styleable>
+
+</resources>

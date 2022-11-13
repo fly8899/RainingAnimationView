@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <th.rainingAnimationView.AnimationView
+        android:id="@+id/av"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        custom:direction="topToBottom"
+        custom:duration="10000"
+        custom:layout_constraintBottom_toBottomOf="parent"
+        custom:layout_constraintEnd_toEndOf="parent"
+        custom:layout_constraintStart_toStartOf="parent"
+        custom:layout_constraintTop_toTopOf="parent"
+        custom:simulate3D="true"
+        custom:simulateWiggle="true"
+        custom:spawnDelay="500" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        custom:layout_constraintBottom_toBottomOf="parent"
+        custom:layout_constraintEnd_toEndOf="parent"
+        custom:layout_constraintStart_toStartOf="parent"
+        custom:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
