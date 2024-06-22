@@ -109,8 +109,11 @@ class AnimationView : RelativeLayout {
             try {
 
                 @DrawableRes val drawableId: Int = getResourceId(
-                    R.styleable.AnimationView_drawableId, R.drawable.ic_android_animation_view
+                    R.styleable.AnimationView_drawableId, -1
                 )
+
+                val drawable = if (drawableId != -1) ContextCompat.getDrawable(context, drawableId) else null
+
                 val interpolator = when (getInteger(
                     R.styleable.AnimationView_interpolator, Constants.Interpolator.LINEAR
                 )) {
@@ -138,10 +141,10 @@ class AnimationView : RelativeLayout {
                     ), simulateWiggle = getBoolean(
                         R.styleable.AnimationView_simulateWiggle,
                         Constants.AnimationViewDefault.SIMULATE_WIGGLE
-                    ), interpolator = interpolator, drawableConfig = DrawableConfig(
-                        drawable = ContextCompat.getDrawable(
-                            context, drawableId
-                        ), drawableHeight = getInteger(
+                    ), interpolator = interpolator,
+                    drawableConfig = DrawableConfig(
+                        drawable = drawable,
+                        drawableHeight = getInteger(
                             R.styleable.AnimationView_drawableHeight,
                             Constants.AnimationViewDefault.DRAWABLE_HEIGHT
                         ), drawableWidth = getInteger(
@@ -252,6 +255,10 @@ class AnimationView : RelativeLayout {
 
     fun stop() {
         _animationHandler.post(_stopAnimations)
+    }
+
+    fun updateConfiguration(config: Config) {
+        _config = config
     }
 
     private fun initAnimation() {

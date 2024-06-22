@@ -12,6 +12,7 @@
         android:layout_height="0dp"
         custom:direction="topToBottom"
         custom:duration="10000"
+        custom:drawableId="@drawable/ic_android_animation_view"
         custom:layout_constraintBottom_toBottomOf="parent"
         custom:layout_constraintEnd_toEndOf="parent"
         custom:layout_constraintStart_toStartOf="parent"
