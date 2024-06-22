@@ -215,7 +215,7 @@ class AnimationView : RelativeLayout {
         if (!hasDrawable()) return
         if (measuredWidth == 0 || measuredHeight == 0) return
         val imgV = ImageView(context)
-        imgV.id = ViewCompat.generateViewId()
+        imgV.id = generateViewId()
         imgV.isClickable = false
         imgV.isFocusable = false
         val size = if (config.simulate3D) (1..5).random() else 1
