@@ -11,10 +11,11 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import androidx.core.view.children
 import androidx.core.view.updateMargins
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 
 class AnimationView : RelativeLayout {
 
@@ -60,7 +61,7 @@ class AnimationView : RelativeLayout {
 
     private val _animationRunnable: Runnable = Runnable {
         initAnimation()
-        start()
+        run()
     }
 
     private val _stopAnimations: Runnable = Runnable {
@@ -172,22 +173,85 @@ class AnimationView : RelativeLayout {
         }
     }
 
-    fun start() {
+    fun runWithLifecycle(viewOwner: LifecycleOwner) {
+
+        viewOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onResume(owner: LifecycleOwner) {
+                super.onResume(owner)
+                run()
+            }
+
+            override fun onPause(owner: LifecycleOwner) {
+                super.onPause(owner)
+                stop()
+            }
+
+            override fun onDestroy(owner: LifecycleOwner) {
+                super.onDestroy(owner)
+                owner.lifecycle.removeObserver(this)
+            }
+        })
+
+    }
+
+    fun runWithLifecycle(viewOwner: LifecycleOwner, config: Config) {
+
+        viewOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onResume(owner: LifecycleOwner) {
+                super.onResume(owner)
+                run(config)
+            }
+
+            override fun onPause(owner: LifecycleOwner) {
+                super.onPause(owner)
+                stop()
+            }
+
+            override fun onDestroy(owner: LifecycleOwner) {
+                super.onDestroy(owner)
+                owner.lifecycle.removeObserver(this)
+            }
+        })
+
+    }
+
+    fun runWithLifecycle(viewOwner: LifecycleOwner, drawableConfig: DrawableConfig) {
+
+        viewOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onResume(owner: LifecycleOwner) {
+                super.onResume(owner)
+                run(drawableConfig)
+            }
+
+            override fun onPause(owner: LifecycleOwner) {
+                super.onPause(owner)
+                stop()
+            }
+
+            override fun onDestroy(owner: LifecycleOwner) {
+                super.onDestroy(owner)
+                owner.lifecycle.removeObserver(this)
+            }
+        })
+
+    }
+
+    fun run() {
         _animationHandler.postDelayed(_animationRunnable, config.spawnDelay)
+    }
+
+    fun run(config: Config) {
+        _config = config
+        run()
+    }
+
+    fun run(drawableConfig: DrawableConfig) {
+        _config = config.copy(drawableConfig = drawableConfig)
+        run()
     }
 
     fun stop() {
         _animationHandler.post(_stopAnimations)
-    }
-
-    fun start(config: Config) {
-        _config = config
-        start()
-    }
-
-    fun start(drawableConfig: DrawableConfig) {
-        _config = config.copy(drawableConfig = drawableConfig)
-        start()
     }
 
     private fun initAnimation() {
