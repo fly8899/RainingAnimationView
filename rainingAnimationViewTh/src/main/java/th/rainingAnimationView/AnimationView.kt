@@ -25,9 +25,7 @@ class AnimationView : RelativeLayout {
     }
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
+        context, attrs, defStyleAttr
     ) {
         init(attrs)
     }
@@ -59,10 +57,12 @@ class AnimationView : RelativeLayout {
     }
 
     private val _animationHandler = Handler(Looper.getMainLooper())
+
     private val _animationRunnable: Runnable = Runnable {
         initAnimation()
         start()
     }
+
     private val _stopAnimations: Runnable = Runnable {
         _animationHandler.removeCallbacks(_animationRunnable)
         _animationHandler.post {
@@ -103,20 +103,15 @@ class AnimationView : RelativeLayout {
 
     private fun init(attrs: AttributeSet) {
         context?.theme?.obtainStyledAttributes(
-            attrs,
-            R.styleable.AnimationView,
-            0, 0
+            attrs, R.styleable.AnimationView, 0, 0
         )?.apply {
             try {
 
-                @DrawableRes
-                val drawableId: Int = getResourceId(
-                    R.styleable.AnimationView_drawableId,
-                    R.drawable.ic_android_animation_view
+                @DrawableRes val drawableId: Int = getResourceId(
+                    R.styleable.AnimationView_drawableId, R.drawable.ic_android_animation_view
                 )
                 val interpolator = when (getInteger(
-                    R.styleable.AnimationView_interpolator,
-                    Constants.Interpolator.LINEAR
+                    R.styleable.AnimationView_interpolator, Constants.Interpolator.LINEAR
                 )) {
                     Constants.Interpolator.SLOW_IN_FAST_OUT -> FastOutSlowInInterpolator()
                     Constants.Interpolator.LINEAR -> LinearInterpolator()
@@ -127,61 +122,45 @@ class AnimationView : RelativeLayout {
                     direction = getInteger(
                         R.styleable.AnimationView_direction,
                         Constants.Direction.DIRECTION_TOP_TO_BOTTOM
-                    ),
-                    duration = getInteger(
+                    ), duration = getInteger(
                         R.styleable.AnimationView_duration,
                         Constants.AnimationViewDefault.DURATION.toInt()
-                    ).toLong(),
-                    spawnDelay = getInteger(
+                    ).toLong(), spawnDelay = getInteger(
                         R.styleable.AnimationView_spawnDelay,
                         Constants.AnimationViewDefault.SPAWN_DELAY.toInt()
-                    ).toLong(),
-                    simulate3D = getBoolean(
+                    ).toLong(), simulate3D = getBoolean(
                         R.styleable.AnimationView_simulate3D,
                         Constants.AnimationViewDefault.SIMULATE_3D
-                    ),
-                    simulateWind = getBoolean(
+                    ), simulateWind = getBoolean(
                         R.styleable.AnimationView_simulateWind,
                         Constants.AnimationViewDefault.SIMULATE_WIND
-                    ),
-                    simulateWiggle = getBoolean(
+                    ), simulateWiggle = getBoolean(
                         R.styleable.AnimationView_simulateWiggle,
                         Constants.AnimationViewDefault.SIMULATE_WIGGLE
-                    ),
-                    interpolator = interpolator,
-                    drawableConfig = DrawableConfig(
+                    ), interpolator = interpolator, drawableConfig = DrawableConfig(
                         drawable = ContextCompat.getDrawable(
-                            context,
-                            drawableId
-                        ),
-                        drawableHeight = getInteger(
+                            context, drawableId
+                        ), drawableHeight = getInteger(
                             R.styleable.AnimationView_drawableHeight,
                             Constants.AnimationViewDefault.DRAWABLE_HEIGHT
-                        ),
-                        drawableWidth = getInteger(
+                        ), drawableWidth = getInteger(
                             R.styleable.AnimationView_drawableWidth,
                             Constants.AnimationViewDefault.DRAWABLE_WIDTH
                         )
-                    ),
-                    alphaConfig = AlphaConfig(
+                    ), alphaConfig = AlphaConfig(
                         alpha = getBoolean(
                             R.styleable.AnimationView_alphaAnimation,
                             Constants.AnimationViewDefault.ALPHA
-                        ),
-                        from = getFloat(
+                        ), from = getFloat(
                             R.styleable.AnimationView_alphaFromAnimation,
                             Constants.AnimationViewDefault.ALPHA_FROM
-                        ),
-                        to = getFloat(
+                        ), to = getFloat(
                             R.styleable.AnimationView_alphaToAnimation,
                             Constants.AnimationViewDefault.ALPHA_TO
-                        ),
-                        duration =
-                        getInteger(
+                        ), duration = getInteger(
                             R.styleable.AnimationView_alphaDurationAnimation,
                             Constants.AnimationViewDefault.DURATION.toInt()
-                        ).toLong(),
-                        delay = getFloat(
+                        ).toLong(), delay = getFloat(
                             R.styleable.AnimationView_alphaDelayAnimation,
                             Constants.AnimationViewDefault.DEFAULT_DELAY.toFloat()
                         ).toLong()
@@ -214,33 +193,38 @@ class AnimationView : RelativeLayout {
     private fun initAnimation() {
         if (!hasDrawable()) return
         if (measuredWidth == 0 || measuredHeight == 0) return
+
         val imgV = ImageView(context)
         imgV.id = generateViewId()
         imgV.isClickable = false
         imgV.isFocusable = false
         val size = if (config.simulate3D) (1..5).random() else 1
         val layoutParams = LayoutParams(
-            config.drawableConfig.drawableHeight / size,
-            config.drawableConfig.drawableWidth / size
+            config.drawableConfig.drawableHeight / size, config.drawableConfig.drawableWidth / size
         )
         val minMargin = 0
         val maxMargin = measuredWidth - layoutParams.width
         layoutParams.updateMargins(left = (minMargin..maxMargin).random())
         imgV.setImageDrawable(config.drawableConfig.drawable)
         addView(imgV, layoutParams)
+
         val animationSet = getAnimationSet()
         animationSet.addAnimation(getTranslateAnimation())
+
         if (config.alphaConfig.alpha) animationSet.addAnimation(getAlphaAnimation())
         if (config.simulateWind) animationSet.addAnimation(getSimulateWindAnimation())
         if (config.simulateWiggle) animationSet.addAnimation(getSimulateWiggleAnimation())
+
         animationSet.setAnimationListener(getAnimationEndListener(imgV))
         imgV.animation = animationSet
+
         animationSet.start()
     }
 
     private fun getAnimationSet(): AnimationSet {
         val animationSet = AnimationSet(true)
         animationSet.interpolator = config.interpolator
+
         return animationSet
     }
 
@@ -250,6 +234,7 @@ class AnimationView : RelativeLayout {
         val duration = config.duration / animations
         var start = 0f
         var end = 0f
+
         repeat(animations) {
             end = if (it % 2 == 0) (2..5).random().toFloat() else -end
             val rotationAnimation = RotateAnimation(start, end)
@@ -258,6 +243,7 @@ class AnimationView : RelativeLayout {
             animationSet.addAnimation(rotationAnimation)
             start = end
         }
+
         return animationSet
     }
 
@@ -267,6 +253,7 @@ class AnimationView : RelativeLayout {
         val duration = config.duration / animations
         var start = 0f
         var end = 0f
+
         repeat(animations) {
             end += (2..4).random()
             val rotationAnimation = RotateAnimation(start, end)
@@ -275,26 +262,30 @@ class AnimationView : RelativeLayout {
             animationSet.addAnimation(rotationAnimation)
             start = end
         }
+
         return animationSet
     }
 
     private fun getTranslateAnimation(): Animation {
-        val bottom =
-            measuredHeight.toFloat() + config.drawableConfig.drawableHeight
+        val bottom = measuredHeight.toFloat() + config.drawableConfig.drawableHeight
         val top = 0f - config.drawableConfig.drawableHeight
         val fromYDelta: Float
         val toYDelta: Float
+
         when (config.direction) {
             Constants.Direction.DIRECTION_BOTTOM_TO_TOP -> {
                 fromYDelta = bottom
                 toYDelta = top * 1.25f
             }
+
             Constants.Direction.DIRECTION_TOP_TO_BOTTOM -> {
                 fromYDelta = top
                 toYDelta = bottom * 1.25f
             }
+
             else -> throw AnimationViewException("Invalid direction")
         }
+
         val translateAnimation = TranslateAnimation(0f, 0f, fromYDelta, toYDelta)
         translateAnimation.duration = (config.duration * 1.25f).toLong()
         return translateAnimation
@@ -304,6 +295,7 @@ class AnimationView : RelativeLayout {
         val alphaAnimation = AlphaAnimation(config.alphaConfig.from, config.alphaConfig.to)
         alphaAnimation.startOffset = config.alphaConfig.delay
         alphaAnimation.duration = config.alphaConfig.duration
+
         return alphaAnimation
     }
 
