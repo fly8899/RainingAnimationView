@@ -1,8 +1,18 @@
 # RainingAnimationView
 
-This view can rain drawables. 
+### Dependency
 
 [![](https://jitpack.io/v/fly8899/RainingAnimationView.svg)](https://jitpack.io/#fly8899/RainingAnimationView)
+
+<pre><code>
+  implementation 'com.github.fly8899:RainingAnimationView:$version'
+  
+  allprojects {
+    repositories {
+      maven { url 'https://jitpack.io' }
+    }
+  }
+</code></pre>
 
 ### Supported effects:
 - Wind
@@ -73,18 +83,6 @@ For example, call like this:
         av.stop()
     }
 }
-</code></pre>
-
-### Dependency
-
-<pre><code>
-  implementation 'com.github.fly8899:RainingAnimationView:2.0.0'
-  
-  allprojects {
-    repositories {
-      maven { url 'https://jitpack.io' }
-    }
-  }
 </code></pre>
 
 ### Preview
