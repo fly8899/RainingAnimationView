@@ -1,6 +1,8 @@
 # RainingAnimationView
 
-This view can rain drawables.
+This view can rain drawables. 
+
+[![](https://jitpack.io/v/fly8899/RainingAnimationView.svg)](https://jitpack.io/#fly8899/RainingAnimationView)
 
 ### Supported effects:
 - Wind
